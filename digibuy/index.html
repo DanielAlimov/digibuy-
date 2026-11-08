@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="DigiBuy">
+<meta name="theme-color" content="#1e88ff"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" id="ati" href="">
+<title>DigiBuy</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input{-webkit-user-select:text;user-select:text}
+html,body{margin:0;height:100%;width:100%;position:fixed;overflow:hidden;overscroll-behavior:none;font:16px -apple-system,system-ui,Roboto,sans-serif;background:#000}
+#app{height:100%;display:flex;flex-direction:column;color:#111;background:#f4f5f7}
+#sb{flex:none;display:flex;justify-content:space-between;align-items:flex-end;padding:calc(env(safe-area-inset-top) + 4px) 20px 6px;font-weight:600;font-size:15px;background:var(--sb,#fff);color:var(--sf,#111);transition:background .2s}
+#scr{flex:1;min-height:0;position:relative}
+.sc{position:absolute;inset:0;display:flex;flex-direction:column}
+.bd{flex:1;overflow-y:auto;overscroll-behavior:none;-webkit-overflow-scrolling:touch;padding:12px 14px calc(env(safe-area-inset-bottom) + 20px)}
+button,.bt{font:600 17px inherit;font-family:inherit;border:0;border-radius:16px;min-height:48px;padding:0 18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:transform .1s}
+.bt:active,button:active{transform:scale(.97)}
+.b1{background:#0a84ff;color:#fff}.b2{background:#eef0f4;color:#d32f2f}.b3{background:#1fa463;color:#fff}.b4{background:#eef0f4;color:#111}
+.hd{background:#0a84ff;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 14px;font-size:22px;font-weight:600;flex:none}
+.hd b,.dh b{min-width:44px;min-height:44px;display:flex;align-items:center;font-size:30px;font-weight:400}
+.hm{background:linear-gradient(160deg,#9cc7f7,#b7a8e6 60%,#c997d8)}
+.gr{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 6px;padding:50px 12px 0}
+.ic{text-align:center;color:#fff;font-size:13px;text-shadow:0 1px 3px #0006}
+.ic i{display:flex;width:62px;height:62px;margin:0 auto 6px;border-radius:15px;align-items:center;justify-content:center;font-style:normal;font-size:32px;color:#fff;box-shadow:0 3px 10px #0003;font-weight:800}
+.dots{position:absolute;bottom:130px;left:0;right:0;display:flex;justify-content:center;gap:12px}.dots b{width:9px;height:9px;border-radius:5px;background:#fff7}.dots .o{background:#fff}
+.dock{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 10px);left:14px;right:14px;height:92px;border-radius:32px;background:#fff5;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;justify-content:space-around;align-items:center}
+.dock i{position:relative;width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:30px}
+.bg{position:absolute;top:-5px;right:-5px;background:#f33;color:#fff;font-size:12px;min-width:20px;height:20px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+#push{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top) + 36px);background:#fffffff2;border-radius:24px;padding:14px 18px;box-shadow:0 8px 30px #0004;transform:translateY(-200%);transition:transform .35s;z-index:50;color:#111}
+#push.on{transform:none}#push small{color:#777}#push b{display:block;font-size:19px;margin:2px 0}
+#tt{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 90px);transform:translate(-50%,40px);background:#222e;color:#fff;padding:12px 18px;border-radius:14px;opacity:0;transition:.25s;z-index:60;max-width:88%;text-align:center}
+#tt.on{opacity:1;transform:translate(-50%,0)}
+#sh{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;z-index:40}#sh.on{display:flex}
+.sheet{background:#fff;width:100%;border-radius:26px 26px 0 0;padding:20px 18px calc(env(safe-area-inset-bottom) + 20px);color:#111;animation:up .25s;max-height:80%;overflow-y:auto}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet h3{margin:0 0 6px;font-size:24px}.sheet p{color:#777;margin:0 0 14px}
+.pr{display:flex;gap:10px;align-items:center;margin:8px 0 18px}.pr button{width:56px;height:56px;border-radius:50%;background:#eef0f4;color:#111;font-size:28px;padding:0}
+.pr input{flex:1;min-width:0;height:60px;border:1px solid #ddd;background:#f0f1f5;border-radius:18px;text-align:center;font:600 24px inherit;font-family:inherit}
+.sb2{display:flex;background:#fff;border-radius:26px;padding:8px;gap:8px;align-items:center;margin:0 0 12px}
+.sb2 input{flex:1;min-width:0;height:48px;border:0;background:#f0f1f5;border-radius:16px;padding:0 14px;font-size:16px}
+.sb2 b{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#0a84ff}
+.ah{background:#0a84ff;padding:10px 14px 14px;flex:none}.ah .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.logo{background:#fff;border-radius:20px;padding:8px 16px;font-weight:800;font-size:26px;color:#0a84ff}.logo span{color:#ff9500}
+.chip{background:#ffffff33;color:#fff;border-radius:18px;padding:10px 16px;font-size:18px}
+.cd{background:#fff;border-radius:26px;overflow:hidden;margin:0 0 16px;box-shadow:0 3px 14px #0001}
+.ph0{height:190px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,#34445c,#6b7d99)}
+.tag{position:absolute;top:10px;left:10px;background:#f00;color:#fff;font-weight:800;padding:6px 12px;border-radius:12px;font-size:15px}
+.bk{position:absolute;top:10px;right:10px;width:46px;height:46px;background:#fffd;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.cb{padding:14px 16px}.cb h4{margin:0 0 4px;font-size:21px}
+.pc{font-size:30px;font-weight:800;color:#15803d}.pc s{font-size:17px;color:#555;font-weight:500;margin-left:8px}.pc em{font-size:18px;color:#d32f2f;font-style:normal;margin-left:6px}
+.chs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}.chs span{background:#eef0f4;border-radius:12px;padding:8px 12px;color:#555;font-size:15px}
+.sl{display:flex;align-items:center;gap:12px;border-top:1px solid #eee;padding-top:12px;font-size:14px;color:#777}.sl i{font-size:34px;font-style:normal}.sl b{color:#111;font-size:19px;display:block}.sl .bt{width:auto;min-height:44px;margin-left:auto}
+.nv{flex:none;display:flex;justify-content:space-around;background:#fff;padding:6px 0 calc(env(safe-area-inset-bottom) + 4px);position:relative;box-shadow:0 -2px 12px #0001}
+.nv a{flex:1;text-align:center;font-size:12px;color:#666;min-height:50px;position:relative}.nv a i{display:block;font-style:normal;font-size:22px;filter:grayscale(1)}.nv a.on{color:#0a84ff}.nv a.on i{filter:none}.nv a.fb{flex:.8}
+.fab{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:68px;height:68px;border-radius:50%;background:#0a84ff;color:#fff;font-size:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px #0a84ff66}
+.dt{position:absolute;top:0;right:22%;width:10px;height:10px;background:#0a84ff;border-radius:5px}
+.msgs{flex:1;overflow-y:auto;padding:12px 14px;background:#f4f4f4;overscroll-behavior:none}
+.wn{background:#fdf2cf;border-radius:16px;padding:14px;margin-bottom:14px;color:#333}
+.mb{background:#fff;border-radius:20px;padding:12px 16px;max-width:82%;margin-bottom:12px;font-size:17px;line-height:1.3}.mb small{display:block;color:#aaa;font-size:13px;margin-top:4px}.mb u{text-decoration:none;color:#777;font-weight:600;font-size:15px;display:block}
+.mb.me{background:#0a84ff;color:#fff;margin-left:auto}.mb.me small{color:#cfe5ff}
+.ar{padding:12px 14px calc(env(safe-area-inset-bottom) + 12px);background:#fff;display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:none}.ar .b3{grid-column:1/3}
+.av{width:52px;height:52px;border-radius:50%;background:#bfe0ff;display:flex;align-items:center;justify-content:center;font-size:30px;flex:none}
+.lot{display:flex;align-items:center;gap:14px;padding:12px 14px;background:#fff;border-bottom:1px solid #ddd;flex:none}.lot b{font-size:20px;display:block}.lot span{color:#777}
+.or{background:#ff7a00;color:#fff;align-items:center;text-align:center;position:absolute;inset:0;display:flex;flex-direction:column;padding:40px 24px;overflow:hidden}
+.pl{display:flex;align-items:center;background:#fff linear-gradient(#fff,#eee);border:3px solid #111;border-radius:10px;width:min(92%,320px);height:72px;padding:0 6px;box-shadow:0 4px 12px #0006;font:700 44px/1 'Arial Narrow','Helvetica Neue Condensed',Impact,sans-serif;color:#111;margin:auto;position:relative}
+.pl .m{flex:1;text-align:center;letter-spacing:1px;white-space:nowrap}.pl .r{border-left:3px solid #111;width:68px;height:100%;text-align:center;font-size:32px;padding-top:6px}
+.pl .r em{display:flex;font-size:11px;font-style:normal;justify-content:center;gap:3px;margin-top:-2px;align-items:center}.pl .r em s{width:18px;height:11px;background:linear-gradient(#fff 33%,#1c57a5 33% 66%,#d52b1e 66%);border:1px solid #555}
+.pl .sc2{width:9px;height:9px;border-radius:50%;background:#999;flex:none}
+.pn{background:#1b2230;color:#fff;border-radius:22px;padding:14px 20px;font-size:23px;font-weight:700;margin:auto}.us{background:#2a2145;color:#d6c2ff;border-radius:22px;padding:14px 22px;font-size:30px;font-weight:700;margin:auto}
+.gf{width:110px;height:110px;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:64px;margin:auto;box-shadow:0 6px 18px #0005}
+.dk{background:#0e1015;color:#fff}.dh{display:flex;align-items:center;justify-content:center;position:relative;padding:12px;font-size:22px;font-weight:600;flex:none}.dh b{position:absolute;left:10px;color:var(--ac)}
+.wl{display:flex;justify-content:space-between;padding:6px 18px;font-weight:700;flex:none;font-size:19px}.wl small{font-weight:400;color:#8a8f9c;font-size:15px}
+.tb{display:flex;justify-content:space-around;flex:none;padding:6px 8px 0}.tb a{padding:12px 6px;color:#8a8f9c;font-weight:700;font-size:15px;border-bottom:3px solid transparent;min-height:46px}.tb a.on{color:var(--ac);border-color:var(--ac)}
+.inf{background:#181b23;border-radius:20px;padding:16px;color:#aab0bd;line-height:1.4;margin-bottom:14px}
+.rs{background:#161922;border-radius:28px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;margin-bottom:14px;color:#6b7180;font-size:20px;text-align:center}
+.yb{background:var(--ac);color:#111}.ob{background:transparent;border:2px solid #333;color:#fff;margin-top:10px}.tg{background:#20242e;color:#cfd3dc;width:auto;min-height:40px;font-size:15px;margin:0 0 12px auto;border-radius:20px}
+.ac{background:#1a1d26;border:1px solid #2b6b8f;border-radius:24px;padding:16px;margin-bottom:14px}.ac .row{display:flex;justify-content:space-between;align-items:center;margin:10px 0}
+.rc{border-radius:14px;padding:6px 12px;font-weight:700;background:#ffffff18}.val{font-size:24px;font-weight:700}.tx{color:#9aa0ad;font-size:15px;line-height:1.4}
+.rb{display:flex;gap:4px;margin:8px 0}.rb i{flex:1;height:6px;border-radius:3px}
+.ac .bt{margin-top:8px;font-size:16px}.btn2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn2 .bt{min-height:44px}
+.dk .vs{display:flex;min-height:100px;padding:6px 0}
+.ck{width:100%;height:54px;border-radius:16px;border:1px solid #333;background:#161922;color:#fff;padding:0 14px;font-size:20px;margin-bottom:10px}
+.ul{margin:8px 0;padding-left:20px;color:#aab0bd;line-height:1.6}
+.bank{background:#f4f5f7}.cardb{border-radius:30px;padding:22px;background:linear-gradient(135deg,#ff6b6b,#e03131 60%,#b71c1c);color:#fff;height:210px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 26px #e0313155;margin-bottom:12px}
+.cardb big{font-size:42px;font-weight:700}.chp{width:54px;height:40px;border-radius:9px;background:linear-gradient(135deg,#f5d77a,#d4a02b)}
+.tl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.tl>div,.wb{background:#fff;border-radius:26px;padding:16px;box-shadow:0 2px 10px #0001}.tl b,.wb b{font-size:21px;display:block;margin-top:10px}.tl span,.wb span{color:#777}
+.hr{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid #f0f0f0}.hr b{font-size:17px;margin:0;display:block}.hr span{font-size:14px}
+.keys{display:grid;grid-template-columns:repeat(3,76px);gap:16px;margin:30px auto 0;justify-content:center}.keys a{width:76px;height:76px;border-radius:50%;background:#ffffff2e;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:34px;color:#fff}.keys a small{font-size:10px;letter-spacing:3px}
+.pd{display:flex;gap:22px;justify-content:center;margin:34px 0 0}.pd i{width:18px;height:18px;border:2px solid #fff;border-radius:50%}.pd i.f{background:#fff}
+.shk{animation:sk .3s}@keyframes sk{25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+.pass{background:linear-gradient(135deg,#f9e4e7,#efe3ee);border-radius:26px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px #0002;line-height:1.5}.pass.l{background:linear-gradient(135deg,#f6cde0,#dbe0fb)}.pass small{color:#777;display:block}.pass h5{margin:0 0 8px;color:#7a1f2d;letter-spacing:1px;text-align:center}
+.gar{height:300px;background:linear-gradient(#6e6350,#3a3a40 60%,#22242a);position:relative;flex:none;display:flex;align-items:center;margin:8px -14px 0}
+.gar:before{content:"";position:absolute;top:0;left:50%;margin-left:-40px;border:0 solid transparent;border-bottom:30px solid #333c4a;border-left-width:12px;border-right-width:12px;width:80px;height:0}
+.nm{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:#999}
+.tabs{display:flex;background:#fff;border-radius:26px;padding:4px;margin:10px 0;border:1px solid #ddd}.tabs a{flex:1;text-align:center;padding:12px 2px;border-radius:22px;color:#555;font-weight:600;font-size:14px;min-height:44px}.tabs a.on{background:#0a84ff;color:#fff}
+.li{background:#fff;border-radius:20px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center}.li div{flex:1}.li b{display:block}.li span{color:#777;font-size:14px}.li .bt{width:auto;min-height:44px;font-size:15px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div id="app"><div id="sb"><span id="clk"></span><span>▂▄▆ ᯤ 🔋100%</span></div><div id="scr"></div></div>
+<div id="push"></div><div id="tt"></div><div id="sh"></div>
+<script>
+const $=s=>document.querySelector(s),R=(a,b)=>a+Math.random()*(b-a),RI=(a,b)=>Math.floor(R(a,b+1)),P=a=>a[RI(0,a.length-1)],CL=(x,a,b)=>Math.min(b,Math.max(a,x));
+const F=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')+'\u00a0₽',pad=n=>String(n).padStart(2,'0'),tm=t=>pad(Math.floor(t/60)%24)+':'+pad(t%60);
+const TY={plate:{n:'Номера',i:'🚘',b:5000,c:'#f5c542',sp:'ГИБДД',cost:12000,sd:'ГИБДД Екатеринбурга: за попытку выдают случайный номер. Понравился — заберите на хранение, нет — крутите ещё. Красивые выпадают редко, «легендарные» — почти никогда.'},
+phone:{n:'Телефоны',i:'📱',b:4000,c:'#4cd964',sp:'Оператор',cost:6000,sd:'Салон связи: за попытку выдают случайный номер. Красивые выпадают редко, «легендарные» — почти никогда.'},
+user:{n:'Юзернеймы',i:'@',b:3000,c:'#b388ff',sp:'Регистрация',cost:5000,sd:'Регистрация имени в мессенджере: за попытку выдают случайный юзернейм. Короткие и словесные — редкость.'},
+gift:{n:'Подарки',i:'🎁',b:2500,c:'#ff6fae',sp:'Кейсы',cost:4000,sd:'Открывайте кейсы: внутри случайный подарок со своим тиражом, фоном и узором. Малые тиражи ценятся.'}};
+const RN=['Обычный','Красивый','Редкий','Эпик','Легенда'],RC=['#8a94a6','#4fc3f7','#b388ff','#ff8a65','#ffd54f'],rr=s=>s<1?0:s<3?1:Math.min(4,s-1);
+const NM=['Ахмед','Виктор','Роман','Игорь','Марина','Дмитрий','Сергей','Алина','Олег'],CT=['Псков','Казань','Тюмень','Самара','Омск'],REV=['Всё чётко, спасибо!','Быстрая сделка','Рекомендую продавца','Цена честная'];
+const LET='АВЕКМНОРСТУХ',W={3:['sun','ice','fox','max','neo','zen','sky'],4:['king','rich','boss','gold','moon','lion','wolf','jedi'],5:['alpha','crypt','money','tiger','ghost']};
+const GN=[['🐱','Хрустальный кот'],['🔥','Живой огонь'],['🐉','Нефритовый дракон'],['🍀','Клевер удачи'],['🚀','Лунная ракета'],['👑','Корона короля'],['🦊','Лис-мечтатель'],['💎','Алмаз ночи'],['🎩','Волшебный цилиндр'],['🐙','Осьминог-хакер']],BG=['Серый','Мятный','Золотой','Чёрный бриллиант'],PT=['Нет','Звёзды','Искры','Радуга'],BGC=['#6b7280,#9ca3af','#10b981,#6ee7b7','#d99a00,#ffd54f','#111,#4b3b8f'];
+const RULES={plate:['Тройка цифр (777): +3','Круглые сотни (500, 100): +2','Зеркальные цифры (212): +1','Парные буквы (АА): +1, три одинаковые: ещё +1','Зеркальные буквы (А…А): +1','Статусный регион (77, 99, 197): +1'],
+phone:['Четыре одинаковые цифры в конце: +3','Тройка в конце: +2','Зеркальный хвост из 6 цифр: +2','Цифры по порядку (1234): +2','Тройка в начале/середине: +1','Круглое окончание 00 или повтор пары: +1'],
+user:['Длина 2 символа: +4, 3: +3, 4: +2, 5: +1','Осмысленное слово: +1','Палиндром: +1'],gift:['Тираж до 100: +3, до 1000: +2, до 10 000: +1','Редкий фон (золото, чёрный бриллиант): +1','Редкий узор (искры, радуга): +1']};
+function anPlate(s){let m=s.toUpperCase().replace(/\s/g,'').match(/^([АВЕКМНОРСТУХ])(\d)(\d)(\d)([АВЕКМНОРСТУХ]{2})(\d{2,3})$/);if(!m)return null;let[,l1,a,b,c,l2,r]=m,p=0,t=[];
+if(a==b&&b==c){p+=3;t.push('Тройка цифр')}else if(b=='0'&&c=='0'){p+=2;t.push('Круглые сотни')}else if(a==c){p+=1;t.push('Зеркальные цифры')}
+if(l2[0]==l2[1]){p++;t.push('Парные буквы');if(l1==l2[0]){p++;t.push('Три одинаковые буквы')}}else if(l1==l2[1]){p++;t.push('Зеркальные буквы')}
+if(['77','99','97','777','177','197','199','799'].includes(r)){p++;t.push('Статусный регион')}return{s:Math.min(6,p),t}}
+function anPhone(n){let d=n.replace(/\D/g,'').slice(-10);if(d.length!=10)return null;let p=0,t=[],l4=d.slice(6),l3=d.slice(7),l6=d.slice(4);
+if(/^(\d)\1{3}$/.test(l4)){p+=3;t.push('Четыре одинаковые в конце')}else if(/^(\d)\1{2}$/.test(l3)){p+=2;t.push('Тройка в конце')}else if(/(\d\d)\1$/.test(d)){p++;t.push('Повтор пары')}
+if(/(\d)\1\1/.test(d.slice(0,7))){p++;t.push('Тройка цифр')}
+if(l6==[...l6].reverse().join('')){p+=2;t.push('Зеркальный хвост')}
+if(/0123|1234|2345|3456|4567|5678|6789|9876|8765|7654|6543|5432|4321|3210/.test(d)){p+=2;t.push('По порядку')}
+if(/00$/.test(d)){p++;t.push('Круглый')}return{s:Math.min(6,p),t}}
+function anUser(n){n=n.replace('@','').toLowerCase();let l=n.length;if(l<2||l>12||!/^[a-z0-9_]+$/.test(n))return null;let p=[0,0,4,3,2,1][l]||0,t=['Длина: '+l];if((W[l]||[]).includes(n)){p++;t.push('Слово')}if(l>2&&n==[...n].reverse().join('')){p++;t.push('Палиндром')}return{s:p,t}}
+function anGift(g){let p=g.tir<=100?3:g.tir<=1000?2:g.tir<=10000?1:0,t=['Тираж '+g.tir];if(g.bg>=2){p++;t.push('Фон: '+BG[g.bg])}if(g.pt>=2){p++;t.push('Узор: '+PT[g.pt])}return{s:Math.min(6,p),t}}
+const an=a=>(a.ty=='plate'?anPlate(a.name):a.ty=='phone'?anPhone(a.name):a.ty=='user'?anUser(a.name):anGift(a.g))||{s:0,t:[]};
+const vv=(ty,s)=>Math.max(500,Math.round(TY[ty].b*Math.pow(2.3,s)*S.mk[ty]/100)*100);
+const val=a=>Math.round(vv(a.ty,an(a).s)*a.k*(a.car?1.1:1)/100)*100;
+const fP=d=>`+7 ${d.slice(0,3)} ${d.slice(3,6)}-${d.slice(6,8)}-${d.slice(8)}`;
+function gen(ty,k){if(ty=='plate'){let L=()=>P([...LET]),D=()=>RI(0,9),l1=L(),a=D(),b=D(),c=D(),l2=[L(),L()],r=P(['66','96','196','74','174','59','159','02','86','186','55','43']);
+const fs=[()=>{b=c=a},()=>{b=c=0;a=RI(1,9)},()=>{c=a},()=>{l2[1]=l2[0]},()=>{l1=l2[0]=l2[1]},()=>{r=P(['77','99','97','177','197','777'])},()=>{l2[1]=l1}],ix=[0,1,2,3,4,5,6].sort(()=>Math.random()-.5);
+for(let i=0;i<Math.min(k,3);i++)fs[ix[i]]();return{name:l1+a+b+c+l2.join('')+' '+r}}
+if(ty=='phone'){let d=[9];for(let i=1;i<10;i++)d.push(RI(0,9));
+const fs=[()=>{let x=RI(1,9);for(let i=6;i<10;i++)d[i]=x},()=>{let x=RI(1,9);d[3]=d[4]=d[5]=x},()=>{d[9]=d[4];d[8]=d[5];d[7]=d[6]},()=>{let x=RI(0,5);for(let i=0;i<4;i++)d[5+i]=x+i},()=>{d[8]=d[9]=0},()=>{d[8]=d[6];d[9]=d[7]}],ix=[0,1,2,3,4,5].sort(()=>Math.random()-.5);
+for(let i=0;i<Math.min(k,3);i++)fs[ix[i]]();return{name:fP(d.join(''))}}
+if(ty=='user'){const Lg=n=>{let o='';for(let i=0;i<n;i++)o+=i%2?P([...'aeiou']):P([...'bcdfgklmnprstvz']);return o},h=Math.random()<.5;
+return{name:'@'+(k>=4?Lg(RI(2,3)):k==3?(h?P(W[3]):Lg(3)):k==2?(h?P(W[4]):Lg(4)):k==1?(h?P(W[5]):Lg(5)):Lg(RI(6,9)))}}
+let[e,nm]=P(GN),tir=k>=3?RI(20,100):k==2?RI(101,1000):k==1?RI(1001,10000):RI(10001,200000),g={e,nm,tir,bg:Math.random()<.1*k+.05?RI(1,3):0,pt:Math.random()<.1*k?RI(1,3):0};return{name:e+' '+nm+' №'+RI(1,tir),g}}
+const mkA=(ty,k)=>{let o=gen(ty,k);return{id:S.id++,ty,name:o.name,g:o.g,k:R(.88,1.12),h:[]}};
+const wk=()=>{let r=Math.random();return r<.5?0:r<.8?1:r<.92?2:r<.98?3:r<.997?4:5};
+const KEY='digibuy1';let S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+S=S||{t:480,cash:600000,debt:0,trust:50,as:[],ch:[],vit:[],day:-1,mk:{plate:1,phone:1,user:1,gift:1},sold:[],profit:0,rating:5,fav:[],hist:[{t:'Перевод от мамы',a:5000,d:1}],id:1,q:{b:0,s:0,p:0,sp:0,r:[0,0,0,0]},mom:-1};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let nav=[{s:'home'}],ui={tab:'ads',at:'vit',vt:'plate',vi:0,pt:'a',q:'',sort:0,flt:'',res:{},busy:0,auto:0,fast:0,pin:'',unl:0,ck:'',ckr:null,sh:null};
+function toast(m){let e=$('#tt');e.textContent=m;e.className='on';clearTimeout(toast.x);toast.x=setTimeout(()=>e.className='',2200)}
+function sheet(h){let e=$('#sh');if(!h){e.className='';e.innerHTML='';ui.sh=null;return}e.innerHTML=`<div class="sheet">${h}</div>`;e.className='on'}
+function push(t,m,cid){let e=$('#push');e.innerHTML=`<small>DigiBuy · сейчас</small><b>${t}</b>${m}`;e.dataset.c=cid||'';e.className='on';clearTimeout(push.x);push.x=setTimeout(()=>e.className='',4000)}
+const hist=(t,a)=>{S.hist.unshift({t,a,d:S.day+1});S.hist.length=Math.min(S.hist.length,30)};
+function mkVit(){S.vit=[];for(let i=0;i<8;i++){let ty=P(Object.keys(TY)),a=mkA(ty,wk()),v=val(a),pr=Math.round(v*R(.8,1.35)/100)*100;S.vit.push({id:S.id++,a,pr,old:Math.random()<.4?Math.round(pr*R(1.06,1.18)/100)*100:0,sl:P(NM),rt:R(3.5,5).toFixed(1),vw:RI(20,900),city:P(CT)})}}
+function dayStep(){S.day++;mkVit();for(let k in S.mk)S.mk[k]=CL(S.mk[k]*R(.94,1.07)+(1-S.mk[k])*.12,.6,1.8);
+if(Math.random()<.35){let ty=P(Object.keys(TY)),up=Math.random()<.5,m=up?R(1.15,1.35):R(.7,.88);S.mk[ty]=CL(S.mk[ty]*m,.5,2);push('Рынок: '+TY[ty].n,(up?'Ажиотаж, цены ':'Просадка, цены ')+(up?'+':'')+Math.round((m-1)*100)+'%')}
+S.debt=Math.round(S.debt*1.01);S.q={b:0,s:0,p:0,sp:0,r:[0,0,0,0]};S.as.forEach(a=>{a.h.push(val(a));if(a.h.length>7)a.h.shift()})}
+function hour(){S.as.filter(a=>a.l).forEach(a=>{let v=val(a),r=a.l/v,p=r<=.9?.4:r<=1.05?.22:r<=1.3?.08:.015;if(a.bt>S.t)p*=2.5;if(S.ch.filter(c=>c.aid==a.id&&!c.x).length<2&&Math.random()<p)buyer(a,v,r)})}
+function buyer(a,v,r){let o=r<=1?Math.round(a.l*R(.93,1)/100)*100:Math.round(v*R(.76,1)/100)*100,sc=Math.random()<.1,c={id:S.id++,aid:a.id,nm:P(NM),sc,fk:Math.random()<.2,o,m:Math.min(a.l,Math.round(o*R(1.03,1.18)/100)*100),pat:RI(2,3),x:0,u:1,ms:[]};
+c.m=Math.max(c.m,o);let tx=sc?`Здравствуйте! Беру за ${F(o)}. Отправьте предоплату на карту, я приеду завтра.`:o>=a.l?`Здравствуйте! Беру по вашей цене — ${F(o)}. По рукам?`:`Доброго дня! Давно присматриваюсь к вашему объявлению. Возьму за ${F(o)} — и по рукам?`;
+say(c,'b',tx);S.ch.unshift(c);push(c.nm,tx.length>70?tx.slice(0,70)+'…':tx,c.id);if(['home','ads'].includes(nav[nav.length-1].s))view()}
+const say=(c,w,t)=>c.ms.push({w,t,tm:tm(S.t)});
+function step(){S.t+=2;if(S.t%60==0)hour();if(Math.floor(S.t/1440)>S.day)dayStep()}
+function adv(m){for(let i=0;i<m;i+=2)step();view();save()}
+function sell(a,pr,c){let pf=pr-(a.cost||0);S.cash+=pr;S.profit+=pf;S.sold.unshift({n:a.name,ty:a.ty,pr,pf,r:rr(an(a).s),rev:P(REV)});S.as=S.as.filter(x=>x!==a);S.ch.forEach(x=>{if(x.aid==a.id)x.x=1});S.q.s++;S.q.p+=Math.max(0,pf);
+if(pf>0)S.trust=Math.min(100,S.trust+1);S.rating=CL((S.rating*9+(pf>=0?5:4))/10,1,5);hist('Продажа: '+a.name,pr);toast(`Продано за ${F(pr)}. Прибыль ${pf>=0?'+':''}${F(pf)}`);save()}
+function deal(c,pr){let a=S.as.find(x=>x.id==c.aid);if(!a)return;
+if(c.sc){setTimeout(()=>{say(c,'b','Я отправил «перевод», пришлите код из СМС.');say(c,'b','⚠ Это мошенник. Деньги не пришли, сделка сорвана.');c.x=1;S.trust=Math.max(0,S.trust-3);S.rating=Math.max(1,S.rating-.1);view()},600);return}
+if(c.fk&&Math.random()<.5){setTimeout(()=>{say(c,'b','Извините, передумал. Не получится.');c.x=1;view()},700);return}
+setTimeout(()=>{say(c,'b','Отлично, встречаемся! Деньги на руках.');sell(a,pr,c);view()},600)}
+function bargain(c,p){let a=S.as.find(x=>x.id==c.aid);say(c,'me','Готов отдать за '+F(p)+'.');view();
+setTimeout(()=>{if(p<=c.o||p<=c.m){say(c,'b','Ладно, беру.');view();deal(c,p);return}
+c.pat--;if(c.pat<=0){say(c,'b','Больше торговаться не буду.');c.x=1}else{let X=Math.max(c.o,Math.round(c.m*R(.97,1)/1000)*1000);c.o=X;say(c,'b','У меня нет таких денег. Могу наскрести '+F(X)+'.')}view();save()},800)}
+function buy(id){let v=S.vit.find(x=>x.id==id);if(!v)return;if(S.cash<v.pr)return toast('Не хватает денег. Возьмите кредит в П-Банке');S.cash-=v.pr;v.a.cost=v.pr;S.as.push(v.a);S.vit=S.vit.filter(x=>x!==v);S.q.b++;hist('Покупка: '+v.a.name,-v.pr);toast('Куплено: '+v.a.name);view();save()}
+function spin(ty){let T=TY[ty];if(ui.busy)return;if(S.cash<T.cost){ui.auto=0;return toast('Не хватает денег')}S.cash-=T.cost;S.q.sp++;hist(T.sp+': попытка',-T.cost);ui.busy=1;
+let a=mkA(ty,wk());a.cost=T.cost;let fin=()=>{ui.res[ty]=a;ui.busy=0;view();save();if(ui.auto){if(rr(an(a).s)>=2||S.as.filter(x=>x.ty==ty).length>=20){ui.auto=0;toast('Автокрутка остановлена: '+RN[rr(an(a).s)])}else setTimeout(()=>ui.auto&&spin(ty),350)}};
+ui.res[ty]='…';view();if(ui.fast)fin();else setTimeout(fin,900)}
+function vis(a,sm){let s=sm?' style="transform:scale(.55);margin:-14px"':'';if(a.ty=='plate'){let[m,r]=a.name.split(' ');return`<div class="pl"${s}><i class="sc2"></i><div class="m">${m[0]}&nbsp;${m.slice(1,4)}&nbsp;${m.slice(4)}</div><i class="sc2"></i><div class="r">${r}<em>RUS<s></s></em></div></div>`}
+if(a.ty=='phone')return`<div class="pn"${s}>📱 ${a.name}</div>`;if(a.ty=='user')return`<div class="us"${s}>${a.name}</div>`;return`<div class="gf" style="background:linear-gradient(135deg,${BGC[a.g.bg]})${sm?';transform:scale(.5);margin:-26px':''}">${a.g.e}</div>`}
+const rb=r=>`<div class="rb">${[0,1,2,3,4].map(i=>`<i style="background:${i<=r?RC[r]:'#ffffff22'}"></i>`).join('')}</div>`;
+const spark=a=>{let h=(a.h.length>1?a.h:[val(a),val(a)]),mn=Math.min(...h),mx=Math.max(...h)||1;return`<svg width="90" height="26"><polyline fill="none" stroke="#ffd54f" stroke-width="2" points="${h.map((v,i)=>(i*90/(h.length-1)).toFixed(0)+','+(24-(v-mn)/((mx-mn)||1)*22).toFixed(0)).join(' ')}"/></svg>`};
+const unread=()=>S.ch.filter(c=>c.u).length;
+const APPS=[['ads','Объявления','📢','#0a84ff'],['plate','Номера','🚘','#111'],['phone','Телефоны','📱','#2fb344'],['user','Юзернеймы','@','#8e5cf6'],['gift','Подарки','🎁','#ff5f9e'],['bank','П-Банк','П','#ff7a00'],['vault','Хранилище','🏛','#1e5bd6'],['docs','Госбай','🪪','#7b2cbf'],['sleep','Сон','😴','#6b7bbd'],['tasks','Задания','🏆','#ff8f1f']];
+function sbar(bg,fg){let s=$('#app').style;s.setProperty('--sb',bg);s.setProperty('--sf',fg)}
+function view(){if(document.activeElement&&document.activeElement.tagName=='INPUT'&&!ui.force)return;let n=nav[nav.length-1],h='',bg='#fff',fg='#111';
+if(n.s=='home'){h=home();bg='transparent';fg='#fff'}else if(n.s=='ads'){h=ads();bg='#fff'}else if(n.s=='chat'){h=chat(n.id);bg='#fff'}
+else if(n.s=='app'){h=appv(n.ty);bg='#0e1015';fg='#fff'}else if(n.s=='bank'){if(!ui.unl){h=pin();bg='#ff9a3c';fg='#fff'}else h=bank()}
+else if(n.s=='vault'){h=vault()}else if(n.s=='docs'){h=docs()}else if(n.s=='tasks'){h=tasks()}else if(n.s=='sleep'){h=sleep()}
+sbar(bg,fg);$('#scr').innerHTML=h;$('#clk').textContent='День '+(S.day+1)+' · '+tm(S.t)}
+function home(){let u=unread();return`<div class="sc hm"><div class="gr">${APPS.map(a=>`<div class="ic" data-a="open" data-v="${a[0]}"><i style="background:${a[3]}">${a[2]}</i>${a[1]}</div>`).join('')}</div><div class="dots"><b class="o"></b><b></b><b></b></div>
+<div class="dock"><i style="background:#4caf50" data-a="toast" data-v="Звонки не нужны: торгуйтесь в чате">📞</i><i style="background:#34c759" data-a="msgs">💬${u?`<span class="bg">${u}</span>`:''}</i><i style="background:#444" data-a="toast" data-v="Камера недоступна в симуляторе">📷</i><i style="background:#40c4ff" data-a="open" data-v="docs">🧭</i></div></div>`}
+function cards(){let l=S.vit.filter(v=>(!ui.flt||v.a.ty==ui.flt)&&(!ui.q||(v.a.name+TY[v.a.ty].n).toLowerCase().includes(ui.q.toLowerCase())));if(ui.sort)l=[...l].sort((a,b)=>ui.sort==1?a.pr-b.pr:b.pr-a.pr);return l.map(v=>card(v)).join('')||'<p style="text-align:center;color:#888">Ничего не найдено</p>'}
+function card(v){let a=v.a;return`<div class="cd"><div class="ph0">${v.old?'<span class="tag">СРОЧНО</span>':''}<span class="bk" data-a="fav" data-i="${v.id}">${S.fav.includes(v.id)?'🔖':'🏷'}</span>${vis(a)}</div><div class="cb"><h4>${a.ty=='plate'?'Госномер ':a.ty=='phone'?'Номер ':''}${a.name.length>22?a.name.slice(0,22)+'…':a.name}</h4><div class="pc">${F(v.pr)}${v.old?`<s>${F(v.old)}</s><em>−${Math.round((1-v.pr/v.old)*100)} %</em>`:''}</div>
+<div class="chs"><span>${RN[rr(an(a).s)]}</span><span>📍 ${v.city}</span><span>👁 ${v.vw}</span></div><div class="sl"><i>🧔</i><div><b>${v.sl}</b>⭐ ${v.rt} · частное лицо</div><button class="bt b1" data-a="buy" data-i="${v.id}">Купить</button></div></div></div>`}
+function ads(){let t=ui.tab,body='';
+if(t=='ads')body=`<div class="sb2"><input id="q" placeholder="🔍 Поиск по объявлениям" value="${ui.q}"><b data-a="sort">⇅</b><b data-a="flt">${ui.flt?TY[ui.flt].i:'☰'}</b></div><div id="lst">${cards()}</div>`;
+if(t=='fav')body=S.vit.filter(v=>S.fav.includes(v.id)).map(card).join('')||'<p style="text-align:center;color:#888;margin-top:40px">В избранном пусто. Нажмите закладку на карточке</p>';
+if(t=='msg')body=S.ch.map(c=>{let a=S.as.find(x=>x.id==c.aid);return`<div class="li" data-a="chat" data-i="${c.id}"><div class="av" style="width:48px;flex:none;height:48px">🧑</div><div><b>${c.nm}${c.u?' 🔵':''}</b><span>${c.x?'Диалог закрыт':c.ms[c.ms.length-1].t.slice(0,50)}</span></div><span>${a?F(a.l||0):''}</span></div>`}).join('')||'<p style="text-align:center;color:#888;margin-top:40px">Сообщений нет. Выставьте актив в продажу кнопкой +</p>';
+if(t=='me')body=prof();
+return`<div class="sc"><div class="ah"><div class="top"><span class="logo">Digi<span>Buy</span></span><span class="chip">📍 Екатеринбург</span></div>${t=='ads'?'':'<div style="color:#fff;font-size:20px;font-weight:600">'+{fav:'Избранное',msg:'Сообщения',me:'Профиль'}[t]+'</div>'}</div><div class="bd">${body}</div>
+<div class="nv">${[['ads','📋','Объявления'],['fav','🔖','Избранное'],['','','']].map(x=>x[0]?`<a data-a="tab" data-v="${x[0]}" class="${t==x[0]?'on':''}"><i>${x[1]}</i>${x[2]}</a>`:'<a class="fb"></a>').join('')}${[['msg','💬','Сообщения'],['me','👤','Профиль']].map(x=>`<a data-a="tab" data-v="${x[0]}" class="${t==x[0]?'on':''}"><i>${x[1]}</i>${x[2]}${x[0]=='msg'&&unread()?'<span class="dt"></span>':''}</a>`).join('')}<span class="fab" data-a="post">+</span></div></div>`}
+const ACH=[['Первая сделка',()=>S.sold.length>=1],['10 сделок',()=>S.sold.length>=10],['Прибыль 100 000 ₽',()=>S.profit>=1e5],['Миллионер',()=>S.cash>=1e6],['Эпичная находка',()=>S.sold.some(s=>s.r>=3)||S.as.some(a=>rr(an(a).s)>=3)],['Легенда',()=>S.sold.some(s=>s.r>=4)||S.as.some(a=>rr(an(a).s)>=4)]];
+function prof(){let b=`<div class="wb" style="text-align:center"><div class="av" style="margin:0 auto 8px;width:70px;height:70px;font-size:40px">😎</div><b>⭐ ${S.rating.toFixed(1)}</b><span>Общая прибыль: ${F(S.profit)}</span></div><div class="tabs">${[['a','Активно'],['s','Продано'],['g','Достижения']].map(x=>`<a data-a="pt" data-v="${x[0]}" class="${ui.pt==x[0]?'on':''}">${x[1]}</a>`).join('')}</div>`;
+if(ui.pt=='a')b+=S.as.filter(a=>a.l).map(a=>`<div class="li"><div><b>${a.name}</b><span>${F(a.l)} ${a.bt>S.t?'· 🚀 буст':''}</span></div><button class="bt b1" data-a="boost" data-i="${a.id}">Буст 3000</button><button class="bt b4" data-a="unlist" data-i="${a.id}">Снять</button></div>`).join('')||'<p style="text-align:center;color:#888">Нет активных объявлений</p>';
+if(ui.pt=='s')b+=S.sold.map(s=>`<div class="li"><div><b>${s.n}</b><span>«${s.rev}»</span></div><div style="text-align:right;flex:none"><b>${F(s.pr)}</b><span style="color:${s.pf>=0?'#15803d':'#d32f2f'}">${s.pf>=0?'+':''}${F(s.pf)}</span></div></div>`).join('')||'<p style="text-align:center;color:#888">Продаж пока нет</p>';
+if(ui.pt=='g')b+=ACH.map(x=>`<div class="li"><div class="av" style="width:44px;height:44px;flex:none;font-size:24px">${x[1]()?'🏅':'🔒'}</div><div><b>${x[0]}</b></div></div>`).join('');return b}
+function chat(id){let c=S.ch.find(x=>x.id==id),a=S.as.find(x=>x.id==c.aid);setTimeout(()=>{let m=$('.msgs');if(m)m.scrollTop=1e6},0);
+return`<div class="sc"><div class="hd"><b data-a="back">←</b><div class="av" style="width:48px;height:48px">🧑</div><div>${c.nm}<div style="font-size:15px;opacity:.8">в сети</div></div></div>${a?`<div class="lot"><div style="width:90px;overflow:hidden;height:54px;flex:none">${vis(a,1)}</div><div><b>${a.name.slice(0,18)}</b><span>${F(a.l||0)}</span></div></div>`:''}
+<div class="msgs"><div class="wn">🛡 Никогда не отправляйте предоплату, вы можете потерять свои деньги!</div>${c.ms.map(m=>`<div class="mb ${m.w=='me'?'me':''}">${m.w=='b'?`<u>${c.nm}</u>`:''}${m.t}<small>${m.tm}${m.w=='me'?' ✓✓':''}</small></div>`).join('')}</div>
+<div class="ar">${c.x||!a?'<div style="grid-column:1/3;text-align:center;color:#888;padding:12px">Диалог закрыт</div>':`<button class="b2" data-a="deny" data-i="${c.id}">✕ Отказать</button><button class="b1" data-a="barg" data-i="${c.id}">🏷 Торговаться</button><button class="b3" data-a="agree" data-i="${c.id}">✓ Согласиться</button>`}</div></div>`}
+function pin(){return`<div class="sc"><div class="or"><div style="width:84px;height:84px;background:#fff;border-radius:24px;color:#ff7a00;font-size:50px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:10px auto 14px">П</div><div style="font-size:34px;font-weight:700">П-Банк</div><div style="margin-top:26px;font-size:20px;font-weight:700">Введите код</div>
+<div class="pd" id="pd">${[0,1,2,3].map(i=>`<i class="${i<ui.pin.length?'f':''}"></i>`).join('')}</div><div class="keys">${['1','2 ABC','3 DEF','4 GHI','5 JKL','6 MNO','7 PQRS','8 TUV','9 WXYZ'].map(k=>`<a data-a="key" data-v="${k[0]}">${k[0]}<small>${k.slice(2)}</small></a>`).join('')}<span></span><a data-a="key" data-v="0">0<small>+</small></a><a data-a="back" style="font-size:20px">✕</a></div><b data-a="toast" data-v="Код по умолчанию: 1234" style="margin-top:20px;font-size:18px;min-height:44px">Забыли код?</b></div></div>`}
+function bank(){let lim=S.trust*8000;return`<div class="sc bank"><div class="hd" style="background:#f4f5f7;color:#111"><b data-a="back" style="color:#ff7a00">←</b>П-Банк</div><div class="bd"><div class="cardb"><div style="font-size:24px;font-weight:700">П-Банк</div><div><span style="opacity:.8">Баланс</span><br><big>${F(S.cash).replace('\u00a0₽',',00 ₽')}</big></div><div style="display:flex;justify-content:space-between;align-items:end"><div style="display:flex;gap:14px;align-items:center"><div class="chp"></div>•••• 5232</div><div style="text-align:right;font-size:13px">ДЕБЕТОВАЯ<br><b style="font-size:19px">ИГРОК</b></div></div></div>
+<div class="tl"><div data-a="loan"><span>🏛</span><b>Кредиты</b><span>${S.debt?'Долг '+F(S.debt):'Нет долгов'}</span></div><div data-a="toast" data-v="Лимит кредита растёт с доверием: ${lim.toLocaleString('ru')} ₽"><span>🔒</span><b>Доверие</b><span>${S.trust} из 100</span></div></div>
+<div class="wb" data-a="mom" style="margin-bottom:12px"><span>💝</span><b>Перевести родным</b><span>Маме, бабушке, другу — просто так</span></div>
+<div class="wb"><b style="font-size:26px;margin:0 0 6px">История</b>${S.hist.map(h=>`<div class="hr"><div><b>${h.t}</b><span>День ${h.d}</span></div><b style="color:${h.a>0?'#15803d':'#111'}">${h.a>0?'+':''}${F(h.a)}</b></div>`).join('')}</div></div></div>`}
+function vault(){let l=S.as,tot=l.reduce((s,a)=>s+val(a),0),cost=l.reduce((s,a)=>s+(a.cost||0),0),t=ui.vt,it=l.filter(a=>a.ty==t),i=CL(ui.vi,0,Math.max(0,it.length-1)),a=it[i];
+return`<div class="sc"><div class="hd"><b data-a="back">←</b>Хранилище</div><div class="bd" style="background:#f4f5f7"><div class="wb" style="display:flex;justify-content:space-between"><div><span>Стоимость по оценке</span><b style="font-size:30px;margin:4px 0">${F(tot)}</b><b style="color:#15803d;font-size:18px">${tot-cost>=0?'+':''}${F(tot-cost)}</b></div><div style="text-align:right"><span>Активов <b style="display:inline">${l.length}</b></span><br><span>В продаже <b style="display:inline">${l.filter(x=>x.l).length}</b></span><br><span>Рынок <b style="display:inline;font-size:15px">${Object.keys(TY).map(k=>TY[k].i+(S.mk[k]>=1?'↑':'↓')).join(' ')}</b></span></div></div>
+<div class="tabs">${Object.keys(TY).map(k=>`<a data-a="vt" data-v="${k}" class="${t==k?'on':''}">${TY[k].n}</a>`).join('')}</div>
+<div class="gar">${a?vis(a):'<div class="nm" style="bottom:130px">Здесь пока пусто</div>'}<div class="nm">${it.length?(i+1)+' из '+it.length:''}</div>${it.length>1?`<b data-a="vi" data-v="-1" style="position:absolute;left:8px;color:#fff;font-size:34px;min-width:44px;min-height:44px">‹</b><b data-a="vi" data-v="1" style="position:absolute;right:8px;color:#fff;font-size:34px;min-width:44px;min-height:44px">›</b>`:''}</div>
+${a?`<div class="ac dk" style="margin-top:12px">${acard(a)}<button class="bt ob" data-a="open" data-v="${t}">Открыть «${TY[t].n}»</button></div>`:''}</div></div>`}
+function acard(a){let r=rr(an(a).s);return`<div class="row"><span class="rc" style="color:${RC[r]}">${RN[r]}</span><span class="val">≈ ${F(val(a))}</span></div>${rb(r)}<div class="tx">${a.l?'В продаже за '+F(a.l):'На хранении'}${a.car?' · на машине':''} · куплен за ${F(a.cost||0)}</div><div class="tx">${an(a).t.join(' · ')||'Без особенностей'}</div><div style="margin-top:6px">${spark(a)}</div>`}
+function docs(){let M={'Фамилия':'Иванов','Имя':'Иван','Отчество':'Иванович'};return`<div class="sc"><div class="hd" style="background:#7b2cbf"><b data-a="back">←</b>Госбай</div><div class="bd" style="background:#f0f2f8"><div class="pass"><h5>РОССИЙСКАЯ ФЕДЕРАЦИЯ · ПАСПОРТ</h5><div style="display:flex;gap:14px"><div style="width:90px;height:110px;background:#e6ecf5;border-radius:10px;font-size:56px;display:flex;align-items:center;justify-content:center">🧑</div><div>${Object.keys(M).map(k=>`<small>${k}</small><b>${M[k]}</b>`).join('')}</div></div><small>Дата рождения</small><b>20.10.2000 · МУЖ.</b><small>Место рождения</small><b>ГОР. ЕКАТЕРИНБУРГ</b></div>
+<div class="pass l"><h5 style="color:#223">ВОДИТЕЛЬСКОЕ УДОСТОВЕРЕНИЕ · DRIVING LICENCE</h5><small>3. Дата рождения</small><b>20.10.2000</b><small>5. Номер</small><b>87 04 000979</b><small>9. Категории</small><b>B, B1, M</b></div>
+<h3>Сертификаты ваших активов</h3>${S.as.map(a=>`<div class="li"><span style="font-size:32px">📄</span><div><b>${a.name.slice(0,26)}</b><span>№ ${(a.id*7919+100000).toString(16).toUpperCase()} · ${TY[a.ty].n}</span></div></div>`).join('')||'<p style="color:#777">Активов пока нет</p>'}</div></div>`}
+function tasks(){const T=[['Купить 2 актива',S.q.b,2],['Прокрутить 3 раза',S.q.sp,3],['Продать актив',S.q.s,1],['Заработать 20 000 ₽',S.q.p,20000]];
+return`<div class="sc"><div class="hd" style="background:#ff8f1f"><b data-a="back">←</b>Задания дня</div><div class="bd">${T.map((t,i)=>`<div class="li"><div><b>${t[0]}</b><span>${Math.min(t[1],t[2]).toLocaleString('ru')} / ${t[2].toLocaleString('ru')} · награда 5 000 ₽</span></div>${S.q.r[i]?'<span>✓</span>':`<button class="bt ${t[1]>=t[2]?'b3':'b4'}" data-a="claim" data-i="${i}" ${t[1]>=t[2]?'':'disabled style="opacity:.4"'}>Забрать</button>`}</div>`).join('')}</div></div>`}
+function sleep(){return`<div class="sc"><div class="hd" style="background:#4a5a9a"><b data-a="back">←</b>Сон</div><div class="bd"><p style="font-size:18px">Время идёт: покупатели пишут, цены меняются, витрина обновляется.</p><div style="display:grid;gap:10px"><button class="b1" data-a="sl" data-v="60">Пропустить 1 час</button><button class="b1" data-a="sl" data-v="480">Спать 8 часов</button><button class="b1" data-a="sl" data-v="${1440-S.t%1440+480}">Спать до утра</button></div></div></div>`}
+function appv(ty){let T=TY[ty],n=S.as.filter(a=>a.ty==ty),h=`<div class="sc dk" style="--ac:${T.c}"><div class="dh"><b data-a="back">←</b>${T.n}</div><div class="wl"><span>💳 ${F(S.cash)}</span><small>На хранении ${n.length}/20</small></div><div class="tb">${[['vit','Витрина'],['spin',T.sp],['mine','Мои'],['chk','Проверка']].map(t=>`<a data-a="at" data-v="${t[0]}" class="${ui.at==t[0]?'on':''}">${t[1]}</a>`).join('')}</div><div class="bd">`;
+if(ui.at=='vit'){h+=`<div class="inf">Витрина обновляется раз в игровой день. До обновления: ${Math.ceil((1440-S.t%1440)/60)} ч.</div>`;h+=S.vit.filter(v=>v.a.ty==ty).map(v=>`<div class="ac"><div class="vs">${vis(v.a)}</div><div class="row"><span class="rc" style="color:${RC[rr(an(v.a).s)]}">${RN[rr(an(v.a).s)]}</span><span class="val">≈ ${F(val(v.a))}</span></div><div class="tx">${an(v.a).t.join(' · ')}</div><button class="bt yb" data-a="buy" data-i="${v.id}">Купить за ${F(v.pr)}</button></div>`).join('')||'<div class="inf">Сегодня таких лотов нет. Загляните завтра или поспите.</div>'}
+if(ui.at=='spin'){let r=ui.res[ty];h+=`<div class="inf">${T.sd}</div><button class="tg" data-a="fast">Быстро: ${ui.fast?'вкл':'выкл'}</button><div class="rs">${r=='…'?'<div style="color:#fff;font-size:22px">Крутим…</div>':r?vis(r)+`<span class="rc" style="color:${RC[rr(an(r).s)]}">${RN[rr(an(r).s)]}</span><span class="val" style="color:#fff">≈ ${F(val(r))}</span><span class="tx">${an(r).t.join(' · ')||'Без особенностей'}</span>${r.taken?'':'<button class="bt b4" style="color:#111" data-a="take">Забрать на хранение</button>'}`:'Нажмите «Крутить»'}</div>
+<button class="yb" data-a="spin">${ui.busy?'Крутим…':'Крутить за '+F(T.cost)}</button><button class="ob" data-a="auto">${ui.auto?'Остановить автокрутку':'Автокрутка'}</button>`}
+if(ui.at=='mine')h+=n.map(a=>`<div class="ac"><div class="vs">${vis(a)}</div>${acard(a)}<div class="btn2">${a.l?`<button class="bt ob" data-a="unlist" data-i="${a.id}">Снять с продажи</button>`:`<button class="bt yb" data-a="list" data-i="${a.id}">Продать</button>`}<button class="bt ob" data-a="dump" data-i="${a.id}">Сдать за ${F(val(a)*.6)}</button>${ty=='plate'&&!a.car?`<button class="bt ob" style="grid-column:1/3" data-a="car" data-i="${a.id}">Повесить на машину</button>`:''}</div></div>`).join('')||'<div class="inf">Здесь пусто. Купите на витрине или крутите.</div>';
+if(ui.at=='chk'){let r=ui.ckr;h+=`<div class="inf">Введите ${{plate:'номер, например А777АА 77',phone:'номер, например +7 999 777-77-77',user:'юзернейм, например @king',gift:'тираж подарка, например 80'}[ty]}</div><input class="ck" id="ck" value="${ui.ck}" placeholder="Введите значение"><button class="yb" data-a="chk">Оценить</button>${r===0?'<div class="inf" style="margin-top:12px">Не удалось разобрать. Проверьте формат.</div>':r?`<div class="ac" style="margin-top:12px"><div class="row"><span class="rc" style="color:${RC[rr(r.s)]}">${RN[rr(r.s)]}</span><span class="val">≈ ${F(vv(ty,r.s))}</span></div>${rb(rr(r.s))}<div class="tx">${r.t.join(' · ')||'Без особенностей'}</div></div>`:''}<h3 style="margin:18px 0 0">Что ценится</h3><ul class="ul">${RULES[ty].map(x=>`<li>${x}</li>`).join('')}</ul>`}
+return h+'</div></div>'}
+function priceSheet(kind,id,def,sub){let a=kind=='list'?S.as.find(x=>x.id==id):0;ui.sh={kind,id};let st=500;sheet(`<h3>🏷 ${kind=='list'?'Выставить на продажу':'Торговаться (Цена)'}</h3><p>${sub}</p><b>Ваша цена (₽)</b><div class="pr"><button data-a="pm" data-v="-1">−</button><input id="pv" inputmode="numeric" value="${def}" data-st="${st}"><button data-a="pm" data-v="1">+</button></div><button class="b1" data-a="pok">${kind=='list'?'Опубликовать':'Предложить'}</button>`)}
+function act(a,d){let n=nav[nav.length-1];ui.force=1;
+switch(a){
+case'open':{let v=d.v;if(TY[v]){ui.at='vit';nav.push({s:'app',ty:v})}else if(v=='ads'){ui.tab='ads';nav.push({s:'ads'})}else{if(v=='vault')ui.vt='plate';nav.push({s:v})}break}
+case'back':nav.length>1&&nav.pop();break;case'msgs':ui.tab='msg';nav.push({s:'ads'});break;case'toast':toast(d.v);break;
+case'tab':ui.tab=d.v;break;case'pt':ui.pt=d.v;break;case'at':ui.at=d.v;ui.ckr=null;break;case'vt':ui.vt=d.v;ui.vi=0;break;case'vi':ui.vi+=+d.v;break;
+case'sort':ui.sort=(ui.sort+1)%3;toast(['Без сортировки','Сначала дешёвые','Сначала дорогие'][ui.sort]);break;
+case'flt':{let k=['',...Object.keys(TY)];ui.flt=k[(k.indexOf(ui.flt)+1)%k.length];toast(ui.flt?'Только: '+TY[ui.flt].n:'Все категории');break}
+case'fav':{let i=+d.i;S.fav=S.fav.includes(i)?S.fav.filter(x=>x!=i):[...S.fav,i];break}
+case'buy':buy(+d.i);break;case'fast':ui.fast=!ui.fast;break;
+case'spin':spin(n.ty);ui.force=0;return;
+case'auto':ui.auto=!ui.auto;if(ui.auto)spin(n.ty);break;
+case'take':{let r=ui.res[n.ty];if(r&&!r.taken){if(S.as.filter(x=>x.ty==n.ty).length>=20)toast('Хранилище заполнено (20/20)');else{r.taken=1;S.as.push(r);toast('Забрано на хранение')}}break}
+case'chk':{ui.ck=$('#ck').value;let v=ui.ck.trim(),r=n.ty=='plate'?anPlate(v):n.ty=='phone'?anPhone(v):n.ty=='user'?anUser(v):(+v>0?anGift({tir:+v,bg:0,pt:0}):null);ui.ckr=r||0;break}
+case'dump':{let x=S.as.find(q=>q.id==+d.i);if(x){S.cash+=Math.round(val(x)*.6);S.as=S.as.filter(q=>q!==x);S.ch.forEach(c=>{if(c.aid==x.id)c.x=1});hist('Сдача: '+x.name,Math.round(val(x)*.6));toast('Сдано государству за 60% оценки')}break}
+case'car':{let x=S.as.find(q=>q.id==+d.i);x.car=1;toast('Номер на машине: оценка +10%');break}
+case'unlist':{let x=S.as.find(q=>q.id==+d.i);x.l=0;S.ch.forEach(c=>{if(c.aid==x.id)c.x=1});toast('Снято с продажи');break}
+case'boost':{let x=S.as.find(q=>q.id==+d.i);if(S.cash<3000)toast('Не хватает денег');else{S.cash-=3000;x.bt=S.t+1440;hist('Продвижение: '+x.name,-3000);toast('Объявление продвигается 24 часа')}break}
+case'post':{let l=S.as.filter(x=>!x.l);sheet(`<h3>Что продаём?</h3><p>Выберите актив из хранилища</p>${l.map(x=>`<div class="li" style="background:#f4f5f7" data-a="list" data-i="${x.id}"><div><b>${x.name.slice(0,24)}</b><span>≈ ${F(val(x))}</span></div></div>`).join('')||'<p>Нет свободных активов. Купите на витрине.</p>'}`);ui.force=0;return}
+case'list':{let x=S.as.find(q=>q.id==+d.i);priceSheet('list',x.id,Math.round(val(x)*1.15/500)*500,'Оценка ≈ '+F(val(x))+'. Чем ближе цена к оценке, тем больше покупателей.');ui.force=0;return}
+case'pm':{let i=$('#pv'),s=+i.dataset.st;i.value=Math.max(500,(+i.value||0)+s*d.v);ui.force=0;return}
+case'pok':{let p=Math.round(+$('#pv').value),s=ui.sh;if(!p||p<500)return toast('Введите цену');sheet();
+if(s.kind=='list'){let x=S.as.find(q=>q.id==s.id);x.l=p;toast('Объявление опубликовано');if(n.s=='ads'&&ui.tab=='ads'){ui.tab='me';ui.pt='a'}}else{let c=S.ch.find(q=>q.id==s.id);bargain(c,p)}break}
+case'chat':{let c=S.ch.find(q=>q.id==+d.i);c.u=0;nav.push({s:'chat',id:c.id});break}
+case'deny':{let c=S.ch.find(q=>q.id==+d.i);say(c,'me','Спасибо, не подходит.');c.x=1;if(c.sc){S.trust=Math.min(100,S.trust+1);toast('Верно: предоплату просят мошенники')}break}
+case'agree':{let c=S.ch.find(q=>q.id==+d.i);say(c,'me','Согласен, '+F(c.o)+'.');deal(c,c.o);break}
+case'barg':{let c=S.ch.find(q=>q.id==+d.i),a=S.as.find(q=>q.id==c.aid),def=Math.min(a.l,c.o+Math.max(500,Math.round(a.l*.01/500)*500));priceSheet('barg',c.id,def,'Текущее предложение: '+F(c.o));ui.force=0;return}
+case'key':{if(ui.pin.length<4)ui.pin+=d.v;if(ui.pin.length==4){if(ui.pin=='1234')ui.unl=1;else{ui.pin='';view();$('#pd').className='pd shk';toast('Неверный код');ui.force=0;return}}break}
+case'mom':if(S.mom<S.day){S.mom=S.day;S.cash+=5000;hist('Перевод от мамы',5000);toast('Мама перевела 5 000 ₽')}else toast('Мама уже помогла сегодня');break;
+case'loan':{let av=S.trust*8000-S.debt;sheet(`<h3>Кредиты</h3><p>Долг: ${F(S.debt)} · доступно ${F(Math.max(0,av))} · 1% в день</p><div style="display:grid;gap:10px">${[50000,100000,300000].map(x=>`<button class="b1" data-a="take2" data-v="${x}">Взять ${F(x)}</button>`).join('')}<button class="b3" data-a="pay">Погасить долг</button></div>`);ui.force=0;return}
+case'take2':{let x=+d.v;if(x>S.trust*8000-S.debt)toast('Лимит доверия исчерпан');else{S.debt+=x;S.cash+=x;hist('Кредит',x);toast('Кредит получен')}sheet();break}
+case'pay':{let x=Math.min(S.cash,S.debt);if(x<=0)toast('Нечего погашать');else{S.cash-=x;S.debt-=x;hist('Погашение кредита',-x);if(!S.debt)S.trust=Math.min(100,S.trust+3);toast('Погашено '+F(x))}sheet();break}
+case'claim':{let i=+d.i,T=[S.q.b>=2,S.q.sp>=3,S.q.s>=1,S.q.p>=20000];if(T[i]&&!S.q.r[i]){S.q.r[i]=1;S.cash+=5000;hist('Награда за задание',5000)}break}
+case'sl':adv(+d.v);ui.force=0;return}
+ui.force=0;view();save()}
+document.addEventListener('click',e=>{if(e.target.id=='sh'){sheet();return}let t=e.target.closest('[data-a]');if(t)act(t.dataset.a,t.dataset)});
+document.addEventListener('input',e=>{if(e.target.id=='q'){ui.q=e.target.value;$('#lst').innerHTML=cards()}});
+$('#push').addEventListener('click',()=>{let id=+$('#push').dataset.c;$('#push').className='';if(id){let c=S.ch.find(x=>x.id==id);if(c){c.u=0;nav=[{s:'home'},{s:'chat',id}];view()}}});
+document.addEventListener('touchmove',e=>{if(!e.target.closest('.bd,.msgs,.sheet'))e.preventDefault()},{passive:false});
+(function(){let c=document.createElement('canvas');c.width=c.height=180;let x=c.getContext('2d');x.fillStyle='#0a84ff';x.fillRect(0,0,180,180);x.fillStyle='#fff';x.font='800 96px -apple-system,sans-serif';x.textAlign='center';x.fillText('D',90,118);x.fillStyle='#ff9500';x.fillRect(54,132,72,10);$('#ati').href=c.toDataURL()})();
+if(S.day<0){S.day=Math.floor(S.t/1440);mkVit()}
+setInterval(()=>{step();$('#clk').textContent='День '+(S.day+1)+' · '+tm(S.t)},1000);setInterval(save,5000);
+document.addEventListener('visibilitychange',save);view();
+</script></body></html>
