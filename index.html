@@ -101,8 +101,15 @@ button,.bt{font:600 17px inherit;font-family:inherit;border:0;border-radius:16px
 .g2{box-shadow:0 0 0 2px #3b82f6,0 0 18px #3b82f655}.g3{box-shadow:0 0 0 2px #a855f7,0 0 26px #a855f788}.g4{box-shadow:0 0 0 2px #fbbf24,0 0 34px #fbbf24aa;animation:gl 1.6s infinite alternate}@keyframes gl{to{box-shadow:0 0 0 2px #fff4,0 0 50px #fbbf24}}
 .roll{opacity:.85}.roll .bt{visibility:hidden}.roll>*{filter:blur(1px)}
 .lkd{display:flex;gap:16px;justify-content:center}.lkd b{width:14px;height:14px;border:2px solid #fff;border-radius:50%}.lkd .o{background:#fff}.lkp{display:grid;grid-template-columns:repeat(3,76px);gap:14px;margin-top:22px;justify-content:center}.lkp button{width:76px;height:76px;border-radius:50%;border:0;background:#fff3;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:30px;padding:0}
+#rb{flex:none;height:env(safe-area-inset-top);background:#000}
+#sb{position:relative;height:44px;padding:0 22px;align-items:center}#sb .rt{display:flex;gap:6px;align-items:center;font-size:15px}
+#isl{position:absolute;left:50%;top:5px;transform:translateX(-50%);width:118px;height:34px;border-radius:20px;background:#000;color:#fff;font:600 13px -apple-system,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;z-index:5;transition:width .35s cubic-bezier(.3,1.4,.5,1)}#isl.x{width:min(340px,94vw)}
+#push{top:calc(env(safe-area-inset-top) + 52px);transition:transform .35s,opacity .2s}#push:not(.on){opacity:0;pointer-events:none}
+.dots{bottom:118px}.dock{bottom:12px}
+.lkb{position:absolute;left:0;right:0;bottom:40px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;font-size:17px}.lkb i{width:50px;height:50px;border-radius:50%;background:#0004;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:22px}
+.hbar{position:absolute;bottom:10px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#fff}
 </style></head><body>
-<div id="app"><div id="sb"><span id="clk"></span><span>▂▄▆ ᯤ 🔋100%</span></div><div id="scr"></div></div>
+<div id="app"><div id="rb"></div><div id="sb"><span id="clk"></span><i id="isl"></i><span class="rt"><svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1.5 5a11 11 0 0115 0M4.5 8.2a6.7 6.7 0 019 0"/><circle cx="9" cy="11.6" r="1.3" fill="currentColor" stroke="none"/></svg><svg width="28" height="14" viewBox="0 0 28 14"><rect x=".5" y=".5" width="23" height="13" rx="4" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="20" height="10" rx="2.5" fill="currentColor"/><rect x="25" y="4.5" width="2" height="5" rx="1" fill="currentColor" opacity=".5"/></svg>100%</span></div><div id="scr"></div></div>
 <div id="push"></div><div id="tt"></div><div id="sh"></div>
 <script>
 const $=s=>document.querySelector(s),R=(a,b)=>a+Math.random()*(b-a),RI=(a,b)=>Math.floor(R(a,b+1)),P=a=>a[RI(0,a.length-1)],CL=(x,a,b)=>Math.min(b,Math.max(a,x));
@@ -151,7 +158,7 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 let nav=[{s:'lock'}],ui={tab:'ads',at:'vit',vt:'plate',vi:0,pt:'a',q:'',sort:0,flt:'',res:{},busy:0,auto:0,fast:0,pin:'',unl:0,ck:'',ckr:null,sh:null};
 function toast(m){let e=$('#tt');e.textContent=m;e.className='on';clearTimeout(toast.x);toast.x=setTimeout(()=>e.className='',2200)}
 function sheet(h){let e=$('#sh');if(!h){e.className='';e.innerHTML='';ui.sh=null;return}e.innerHTML=`<div class="sheet">${h}</div>`;e.className='on'}
-function push(t,m,cid){let e=$('#push');e.innerHTML=`<small>DigiBuy · сейчас</small><b>${t}</b>${m}`;e.dataset.c=cid||'';e.className='on';clearTimeout(push.x);push.x=setTimeout(()=>e.className='',4000)}
+function push(t,m,cid){isl((t+' · '+m).replace(/<[^>]*>/g,''));let e=$('#push');e.innerHTML=`<small>DigiBuy · сейчас</small><b>${t}</b>${m}`;e.dataset.c=cid||'';e.className='on';clearTimeout(push.x);push.x=setTimeout(()=>e.className='',4000)}
 const hist=(t,a)=>{S.hist.unshift({t,a,d:S.day+1});S.hist.length=Math.min(S.hist.length,30)};
 function mkVit(){S.vit=[];for(let i=0;i<8;i++){let ty=P(Object.keys(TY)),a=mkA(ty,wk()),v=val(a),pr=Math.round(v*R(.8,1.35)/100)*100;S.vit.push({id:S.id++,a,pr,old:Math.random()<.4?Math.round(pr*R(1.06,1.18)/100)*100:0,sl:P(NM),rt:R(3.5,5).toFixed(1),vw:RI(20,900),city:P(CT)})}}
 function dayStep(){S.day++;mkVit();for(let k in S.mk)S.mk[k]=CL(S.mk[k]*R(.94,1.07)+(1-S.mk[k])*.12,.6,1.8);
@@ -188,8 +195,8 @@ function view(){if(document.activeElement&&document.activeElement.tagName=='INPU
 if(n.s=='lock'){h=lock();bg='transparent';fg='#fff'}else if(n.s=='home'){h=home();bg='transparent';fg='#fff'}else if(n.s=='ads'){h=ads();bg='#fff'}else if(n.s=='chat'){h=chat(n.id);bg='#fff'}
 else if(n.s=='app'){h=appv(n.ty);bg='#0e1015';fg='#fff'}else if(n.s=='bank'){if(!ui.unl){h=pin();bg='#ff9a3c';fg='#fff'}else h=bank()}
 else if(n.s=='vault'){h=vault()}else if(n.s=='docs'){h=docs()}else if(n.s=='tasks'){h=tasks()}else if(n.s=='sleep'){h=sleep()}else if(n.s=='set'){h=setv()}
-sbar(bg,fg);$('#scr').innerHTML=h;if(view.k!=n.s){view.k=n.s;let e=$('#scr').firstElementChild;e&&e.classList.add('ap')}$('#clk').textContent='День '+(S.day+1)+' · '+tm(S.t)}
-function home(){let u=unread();return`<div class="sc hm" style="background:${WP()}"><div class="gr">${APPS.map(a=>`<div class="ic" data-a="open" data-v="${a[0]}"><i style="background:${a[3]}">${a[2]}</i>${a[1]}</div>`).join('')}</div><div class="dots"><b class="o"></b><b></b><b></b></div>
+sbar(bg,fg);$('#app').style.background=(n.s=='home'||n.s=='lock')?WP():'';$('#scr').innerHTML=h;if(view.k!=n.s){view.k=n.s;let e=$('#scr').firstElementChild;e&&e.classList.add('ap')}$('#clk').textContent=ckt()}
+function home(){let u=unread();return`<div class="sc hm" style="background:transparent"><div class="gr">${APPS.map(a=>`<div class="ic" data-a="open" data-v="${a[0]}"><i style="background:${a[3]}">${a[2]}</i>${a[1]}</div>`).join('')}</div><div class="dots"><b class="o"></b><b></b><b></b></div>
 <div class="dock"><i style="background:#4caf50" data-a="toast" data-v="Звонки не нужны: торгуйтесь в чате">📞</i><i style="background:#34c759" data-a="msgs">💬${u?`<span class="bg">${u}</span>`:''}</i><i style="background:#444" data-a="toast" data-v="Камера недоступна в симуляторе">📷</i><i style="background:#40c4ff" data-a="open" data-v="docs">🧭</i></div></div>`}
 function cards(){let l=S.vit.filter(v=>(!ui.flt||v.a.ty==ui.flt)&&(!ui.q||(v.a.name+TY[v.a.ty].n).toLowerCase().includes(ui.q.toLowerCase())));if(ui.sort)l=[...l].sort((a,b)=>ui.sort==1?a.pr-b.pr:b.pr-a.pr);return l.map(v=>card(v)).join('')||'<p style="text-align:center;color:#888">Ничего не найдено</p>'}
 function card(v){let a=v.a;return`<div class="cd"><div class="ph0">${v.old?'<span class="tag">СРОЧНО</span>':''}<span class="bk" data-a="fav" data-i="${v.id}">${S.fav.includes(v.id)?'🔖':'🏷'}</span>${vis(a)}</div><div class="cb"><h4>${a.ty=='plate'?'Госномер ':a.ty=='phone'?'Номер ':''}${a.name.length>22?a.name.slice(0,22)+'…':a.name}</h4><div class="pc">${F(v.pr)}${v.old?`<s>${F(v.old)}</s><em>−${Math.round((1-v.pr/v.old)*100)} %</em>`:''}</div>
@@ -268,7 +275,7 @@ case'loan':{let av=S.trust*8000-S.debt;sheet(`<h3>Кредиты</h3><p>Долг
 case'take2':{let x=+d.v;if(x>S.trust*8000-S.debt)toast('Лимит доверия исчерпан');else{S.debt+=x;S.cash+=x;hist('Кредит',x);toast('Кредит получен')}sheet();break}
 case'pay':{let x=Math.min(S.cash,S.debt);if(x<=0)toast('Нечего погашать');else{S.cash-=x;S.debt-=x;hist('Погашение кредита',-x);if(!S.debt)S.trust=Math.min(100,S.trust+3);toast('Погашено '+F(x))}sheet();break}
 case'claim':{let i=+d.i,T=[S.q.b>=2,S.q.sp>=3,S.q.s>=1,S.q.p>=20000];if(T[i]&&!S.q.r[i]){S.q.r[i]=1;S.cash+=5000;hist('Награда за задание',5000)}break}
-case'lkopen':if(S.pc)ui.lo=1;else nav=[{s:'home'}];break;
+case'lkc':ui.lo=0;ui.lk='';break;case'lkopen':if(S.pc)ui.lo=1;else nav=[{s:'home'}];break;
 case'lk':{let v=d.v;ui.lk=v=='⌫'?(ui.lk||'').slice(0,-1):((ui.lk||'')+v).slice(0,4);if(ui.lk.length==4){if(ui.lk==S.pc){ui.lk='';ui.lo=0;nav=[{s:'home'}];snd('w')}else{ui.lk='';toast('Неверный код')}}break}
 case'stS':S.mute=!S.mute;break;case'stW':S.wp=((S.wp|0)+1)%3;break;
 case'stP':if(S.pc)S.pc='';else{let c=prompt('Придумай 4 цифры');if(/^\d{4}$/.test(c||''))S.pc=c;else toast('Нужно ровно 4 цифры')}break;
@@ -280,7 +287,13 @@ ui.force=0;view();save()}
 let AC;const snd=k=>{if(S.mute)return;try{AC=AC||new(window.AudioContext||webkitAudioContext)();let t=AC.currentTime,f={t:[300],c:[520,660],w:[523,659,784,1047],m:[420]}[k]||[500];f.forEach((x,i)=>{let o=AC.createOscillator(),g=AC.createGain(),u=t+i*.09;o.frequency.value=x;o.type=k=='t'?'square':'sine';g.gain.setValueAtTime(.07,u);g.gain.exponentialRampToValueAtTime(.001,u+.15);o.connect(g);g.connect(AC.destination);o.start(u);o.stop(u+.16)})}catch(e){}};
 document.addEventListener('click',e=>{if(e.target.closest('[data-a]'))snd('m')},true);
 const WPS=['linear-gradient(160deg,#9cc7f7,#b7a8e6 60%,#c997d8)','linear-gradient(160deg,#0f2027,#2c5364)','linear-gradient(160deg,#f6d365,#fda085)'],WP=()=>WPS[S.wp|0];
-function lock(){let k=ui.lk||'',ph=S.pc&&ui.lo;return`<div class="sc hm" style="background:${WP()};align-items:center;color:#fff;text-align:center" ${ph?'':'data-a="lkopen"'}><div style="margin-top:70px;font-size:20px">День ${S.day+1}</div><div style="font-size:88px;font-weight:700;line-height:1">${tm(S.t)}</div>`+(ph?`<div style="margin:30px 0 14px">Введите код-пароль</div><div class="lkd">${[0,1,2,3].map(i=>`<b class="${i<k.length?'o':''}"></b>`).join('')}</div><div class="lkp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<i></i>':`<button data-a="lk" data-v="${n}">${n}</button>`).join('')}</div>`:`<div style="position:absolute;bottom:50px">Нажмите, чтобы открыть ▲</div>`)+`</div>`}
+const dt=()=>{let t=new Date(2024,4,9+S.day).toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});return t[0].toUpperCase()+t.slice(1)};
+function ckt(){return nav[nav.length-1].s=='lock'?'DigiBuy':tm(S.t)}
+function isl(tx){let i=$('#isl');i.textContent='💬 '+tx.slice(0,38);i.classList.add('x');clearTimeout(isl.x);isl.x=setTimeout(()=>{i.classList.remove('x');i.textContent=''},3500)}
+let ty0=0;document.addEventListener('touchstart',e=>{ty0=e.touches[0].clientY},{passive:true});
+document.addEventListener('touchend',e=>{if(nav[nav.length-1].s=='lock'&&!ui.lo&&ty0-e.changedTouches[0].clientY>60){snd('w');if(S.pc)ui.lo=1;else nav=[{s:'home'}];view();save()}},{passive:true});
+function lock(){let k=ui.lk||'',ph=S.pc&&ui.lo,T=`<div class="sc" style="background:transparent;align-items:center;color:#fff;text-align:center"><div style="margin-top:28px;font-size:26px">🔒</div><div style="margin-top:6px;font-size:22px;font-weight:600">${dt()}</div><div style="font-size:88px;font-weight:700;line-height:1.05">${tm(S.t)}</div>`;
+return ph?T+`<div style="margin:30px 0 14px">Введите код-пароль</div><div class="lkd">${[0,1,2,3].map(i=>`<b class="${i<k.length?'o':''}"></b>`).join('')}</div><div class="lkp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<i></i>':`<button data-a="lk" data-v="${n}">${n}</button>`).join('')}</div><div class="lkb" style="justify-content:flex-end"><span data-a="lkc">Отмена</span></div></div>`:T+`<div class="lkb"><i data-a="toast" data-v="Фонарик не нужен">🔦</i><span data-a="lkopen">Смахните вверх, чтобы открыть</span><i data-a="toast" data-v="Камера недоступна в симуляторе">📷</i></div><div class="hbar"></div></div>`}
 function setv(){let r=(l,a,t)=>`<div class="li" data-a="${a}"><div><b>${l}</b><span>${t}</span></div></div>`;return`<div class="sc"><div class="hd" style="background:#8e8e93"><b data-a="back">←</b>Настройки</div><div class="bd">${r('Звук','stS',S.mute?'Выкл':'Вкл')}${r('Обои','stW','Вариант '+((S.wp|0)+1)+' из 3')}${r('Код-пароль','stP',S.pc?'Установлен: '+S.pc:'Выкл')}${r('Заблокировать телефон','stL','Показать экран блокировки')}${r('Сбросить игру','stR','Удалит весь прогресс')}</div></div>`}
 document.addEventListener('click',e=>{if(e.target.id=='sh'){sheet();return}let t=e.target.closest('[data-a]');if(t)act(t.dataset.a,t.dataset)});
 document.addEventListener('input',e=>{if(e.target.id=='q'){ui.q=e.target.value;$('#lst').innerHTML=cards()}});
@@ -288,6 +301,6 @@ $('#push').addEventListener('click',()=>{let id=+$('#push').dataset.c;$('#push')
 document.addEventListener('touchmove',e=>{if(!e.target.closest('.bd,.msgs,.sheet'))e.preventDefault()},{passive:false});
 (function(){let c=document.createElement('canvas');c.width=c.height=180;let x=c.getContext('2d');x.fillStyle='#0a84ff';x.fillRect(0,0,180,180);x.fillStyle='#fff';x.font='800 96px -apple-system,sans-serif';x.textAlign='center';x.fillText('D',90,118);x.fillStyle='#ff9500';x.fillRect(54,132,72,10);$('#ati').href=c.toDataURL()})();
 if(S.day<0){S.day=Math.floor(S.t/1440);mkVit()}
-setInterval(()=>{step();$('#clk').textContent='День '+(S.day+1)+' · '+tm(S.t)},1000);setInterval(save,5000);
+setInterval(()=>{step();$('#clk').textContent=ckt()},1000);setInterval(save,5000);
 document.addEventListener('visibilitychange',save);view();
 </script></body></html>
